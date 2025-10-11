@@ -1,0 +1,122 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  avatar    String?
+  location  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  games           Game[]
+  tradesOffered   Trade[]   @relation("TradeOfferer")
+  tradesReceived  Trade[]   @relation("TradeReceiver")
+  ratingsGiven    Rating[]  @relation("RatingForm")
+  ratingsRecieved Rating[]  @relation("RatingTo")
+  messages        Message[]
+}
+
+model Game {
+  id         String   @id @default(cuid())
+  title      String
+  platform   String
+  condition  String
+  decription String?
+  images     String[]
+  genre      String[]
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updateAt   DateTime @updatedAt
+
+  tradesAsOffered   Trade[] @relation("OfferedGame")
+  tradesAsRequested Trade[] @relation("RequestedGame")
+
+  @@index([userId])
+  @@index([platform])
+}
+
+model Trade {
+  id     String      @id @default(cuid())
+  status TradeStatus @default(PENDING)
+
+  offererId String
+  offerer   User   @relation("TradeOfferer", fields: [offererId], references: [id])
+
+  receiverId String
+  reciever   User   @relation("TradeReceiver", fields: [receiverId], references: [id])
+
+  OfferedGameId String
+  OfferedGame   Game   @relation("OfferedGame", fields: [OfferedGameId], references: [id])
+
+  requestedGameId String
+  requestedGame   Game   @relation("RequestedGame", fields: [requestedGameId], references: [id])
+
+  messages Message[]
+  rating   Rating?
+
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  completedAt DateTime?
+
+  @@index([offererId])
+  @@index([receiverId])
+  @@index([status])
+}
+
+enum TradeStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  COMPLETED
+  CANCELLED
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  content   String
+  senderId  String
+  sender    User     @relation(fields: [senderId], references: [id])
+  tradeId   String
+  trade     Trade    @relation(fields: [tradeId], references: [id], onDelete: Cascade)
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([tradeId])
+  @@index([senderId])
+}
+
+model Rating {
+  id      String  @id @default(cuid())
+  rating  Int // 1-5 stars
+  comment String?
+
+  fromUserId String
+  fromUser   User   @relation("RatingForm", fields: [fromUserId], references: [id])
+
+  toUserId String
+  toUser   User   @relation("RatingTo", fields: [toUserId], references: [id])
+
+  tradeId String @unique
+  trade   Trade  @relation(fields: [tradeId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([toUserId])
+}

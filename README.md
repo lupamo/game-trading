@@ -1,5 +1,4 @@
 # Game Trading Platform
-==============================
 A modern web application that enables gamers to trade physical games with each other instead of buying new ones. Built with Nextjs, TypeScript and Prisma
 
 ## Features

@@ -37,7 +37,7 @@ model Game {
   title      String
   platform   String
   condition  String
-  decription String?
+  description String?
   images     String[]
   genre      String[]
   userId     String

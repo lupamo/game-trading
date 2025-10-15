@@ -95,7 +95,7 @@ export function GameCard({ game }: { game: Game }) {
               </p>
               {game.user.location && (
                 <p className="text-xs text-gray-500 truncate">
-                  📍 {game.user.location}
+                  {game.user.location}
                 </p>
               )}
             </div>

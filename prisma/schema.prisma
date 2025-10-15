@@ -60,7 +60,7 @@ model Trade {
   offerer   User   @relation("TradeOfferer", fields: [offererId], references: [id])
 
   receiverId String
-  reciever   User   @relation("TradeReceiver", fields: [receiverId], references: [id])
+  receiver   User   @relation("TradeReceiver", fields: [receiverId], references: [id])
 
   OfferedGameId String
   OfferedGame   Game   @relation("OfferedGame", fields: [OfferedGameId], references: [id])

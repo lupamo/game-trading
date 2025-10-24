@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import './globals.css'
+
 export const metadata: Metadata = {
   title: "Game Trading Platform",
   description: "Trade games with other gamers",

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 
+
 export default function AddGamePage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
@@ -50,9 +51,9 @@ export default function AddGamePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 ">
       <div className="max-w-2xl mx-auto px-4">
-        <h1 className="text-3xl font-bold mb-8">Add New Game</h1>
+        <h1 className="text-3xl font-bold mb-8 text-blue-600">Add New Game</h1>
 
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow p-6 space-y-6">
           {/* Title */}
@@ -72,7 +73,7 @@ export default function AddGamePage() {
 
           {/* Platform */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-yellow-700 mb-2">
               Platform *
             </label>
             <select

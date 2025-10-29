@@ -2,12 +2,14 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { set } from 'zod'
 
 
 export default function AddGamePage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
+  const [imageFile, setImageFile] = useState<File | null>(null)
   const [formData, setFormData] = useState({
     title: '',
     platform: 'PS5',
@@ -17,12 +19,40 @@ export default function AddGamePage() {
     genre: ['']
   })
 
+  // submit handler
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
     setError('')
 
+    if (!imageFile) {
+      setError('Please select an image file.')
+      setIsLoading(false)
+      return
+    }
     try {
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+      if (!cloudName) {
+        throw new Error('Cloudinary cloud name is not set in environment variables.');
+      }
+      const formDataUpload = new FormData();
+      formDataUpload.append('file', imageFile);
+      formDataUpload.append('upload_preset', 'game_trade');
+      formDataUpload.append('cloud_name', cloudName);
+
+
+      const uploadResponse = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+        {
+          method: 'POST',
+          body: formDataUpload,
+        }
+      );
+      const uploadData = await uploadResponse.json();
+      if (!uploadResponse.ok) {
+        throw new Error(uploadData.error.message || 'Image upload failed');
+      }
+      const imageUrl = uploadData.secure_url;
       const response = await fetch('/api/games', {
         method: 'POST',
         headers: {
@@ -30,10 +60,10 @@ export default function AddGamePage() {
         },
         body: JSON.stringify({
           ...formData,
-          images: formData.images.filter(img => img.trim() !== ''),
+          images: [imageUrl], 
           genre: formData.genre.filter(g => g.trim() !== '')
         }),
-      })
+      });
 
       const data = await response.json()
 
@@ -44,12 +74,17 @@ export default function AddGamePage() {
       alert('Game added successfully!')
       router.push('/games')
     } catch (err: any) {
-      setError(err.message)
+      console.error(err);
+      setError(err.message);
     } finally {
       setIsLoading(false)
     }
   }
-
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
+  }
   return (
     <div className="min-h-screen bg-gray-50 py-8 ">
       <div className="max-w-2xl mx-auto px-4">
@@ -127,17 +162,22 @@ export default function AddGamePage() {
           {/* Image URL */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Image URL (optional)
+              Upload Image
             </label>
             <input
-              type="url"
-              value={formData.images[0]}
-              onChange={(e) => setFormData({ ...formData, images: [e.target.value] })}
+              type="file"
+              accept='image/jpeg,image/png'
+              onChange={handleFileChange}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="https://example.com/image.jpg"
             />
-            <p className="text-xs text-gray-500 mt-1">
-              For now, paste an image URL. We'll add image upload later.
+            {imageFile && (
+              <p className='text-sm text-gray-500 mt-1'>
+                Selected: {imageFile.name}
+              </p>
+            )}
+            <p className='text-xs text-gray-500 mt-1'>
+              Image is required
             </p>
           </div>
 

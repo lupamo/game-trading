@@ -24,12 +24,13 @@ export function GameCard({ game }: { game: Game }) {
   // Use a valid placeholder or data URI
   const placeholderImage = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300"%3E%3Crect width="400" height="300" fill="%23e5e7eb"/%3E%3Ctext x="50%25" y="50%25" dominant-baseline="middle" text-anchor="middle" font-family="sans-serif" font-size="24" fill="%239ca3af"%3ENo Image%3C/text%3E%3C/svg%3E'
   
-  const imageUrl = game.images[0] || placeholderImage
+  const imageUrl = game.images && game.images.length > 0
+    ? game.images[0]
+    : placeholderImage
 
   return (
     <Link href={`/games/${game.id}`}>
       <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden cursor-pointer">
-        {/* Game Image */}
         <div className="relative h-48 bg-gray-200">
           <img
             src={imageUrl}

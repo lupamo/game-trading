@@ -1,12 +1,11 @@
 'use client'
-
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { set } from 'zod'
-
+import { useSession } from 'next-auth/react'
 
 export default function AddGamePage() {
   const router = useRouter()
+  const { data: session, status } = useSession()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [imageFile, setImageFile] = useState<File | null>(null)
@@ -19,6 +18,20 @@ export default function AddGamePage() {
     genre: ['']
   })
 
+  //check authentication
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/login?callbackUrl=/games/add')
+    }
+  }, [status, router])
+  if (status === 'loading' || !session?.user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-xl font-medium text-gray-600">Checking authentication</p>
+      </div>
+    )
+  }
+  
   // submit handler
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()

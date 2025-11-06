@@ -26,13 +26,13 @@ export default function RootLayout({
                 GameTrade
               </Link>
               <div className="flex gap-6">
-                <Link href="/games" className="text-gray-300 hover:text-[#E66B1A]">
+                <Link href="/games" className="text-[#E66B1A] hover:text-[#E66B1A]">
                   Browse Games
                 </Link>
-                <Link href="/games/add" className="text-gray-300 hover:text-[#E66B1A]">
+                <Link href="/games/add" className="text-[#E66B1A] hover:text-[#E66B1A]">
                   Add Game
                 </Link>
-                <Link href="/dashboard" className="text-gray-300 hover:text-[#E66B1A]">
+                <Link href="/dashboard" className="text-[#E66B1A] hover:text-[#E66B1A]">
                   Dashboard
                 </Link>
                 <AuthButton />

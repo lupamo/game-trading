@@ -133,9 +133,6 @@ export default async function GamesPage({
   )
 }
 
-// Remove the old GameCard component and keep the rest as is...
-
-// Filters Sidebar Component
 function FiltersSidebar({ currentParams }: { currentParams: any }) {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">

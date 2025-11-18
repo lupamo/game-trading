@@ -4,6 +4,7 @@ import AuthButton from '../components/AuthButton';
 import Link from "next/link";
 import './globals.css'
 import { SessionProvider } from "next-auth/react";
+import Navbar from "@/components/Navbar";
 
 export const metadata: Metadata = {
   title: "Game Trading Platform",
@@ -19,28 +20,8 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <AuthProvider>
-        <nav className="shadow-sm border-b">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex justify-between h-16 items-center">
-              <Link href="/" className="text-xl font-bold text-[#E66B1A]">
-                GameTrade
-              </Link>
-              <div className="flex gap-6">
-                <Link href="/games" className="text-[#E66B1A] hover:text-[#E66B1A]">
-                  Browse Games
-                </Link>
-                <Link href="/games/add" className="text-[#E66B1A] hover:text-[#E66B1A]">
-                  Add Game
-                </Link>
-                <Link href="/dashboard" className="text-[#E66B1A] hover:text-[#E66B1A]">
-                  Dashboard
-                </Link>
-                <AuthButton />
-              </div>
-            </div>
-          </div>
-        </nav>
-        {children}
+          <Navbar />
+          {children}
         </AuthProvider>
       </body>
     </html>

@@ -68,20 +68,20 @@ export default async function GamesPage({
   if (!session) {
     redirect('/login')
   }
+  const resolvedSearchParams = await searchParams;
 
   const params = {
-    platform: typeof searchParams.platform === 'string' ? searchParams.platform : undefined,
-    search: typeof searchParams.search === 'string' ? searchParams.search : undefined,
-    genre: typeof searchParams.genre === 'string' ? searchParams.genre : undefined,
-    condition: typeof searchParams.condition === 'string' ? searchParams.condition : undefined,
-    page: typeof searchParams.page === 'string' ? searchParams.page : '1',
+    platform: typeof resolvedSearchParams.platform === 'string' ? resolvedSearchParams.platform : undefined,
+    search: typeof resolvedSearchParams.search === 'string' ? resolvedSearchParams.search : undefined,
+    genre: typeof resolvedSearchParams.genre === 'string' ? resolvedSearchParams.genre : undefined,
+    condition: typeof resolvedSearchParams.condition === 'string' ? resolvedSearchParams.condition : undefined,
+    page: typeof resolvedSearchParams.page === 'string' ? resolvedSearchParams.page : '1',
   }
 
   const data = await getGames(params)
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
@@ -233,7 +233,6 @@ function FiltersSidebar({ currentParams }: { currentParams: any }) {
   )
 }
 
-// Pagination Component
 function Pagination({ pagination }: { pagination: GamesResponse['pagination'] }) {
   const { page, totalPages } = pagination
 
@@ -278,7 +277,6 @@ function Pagination({ pagination }: { pagination: GamesResponse['pagination'] })
   )
 }
 
-// Empty State Component
 function EmptyState() {
   return (
     <div className="text-center py-12">

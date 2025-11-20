@@ -72,13 +72,13 @@ export default async function GameDetailPage({
   })
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#1E1E1E]">
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+      <div className="bg-[#1E1E1E] shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <Link 
             href="/games" 
-            className="text-blue-600 hover:text-blue-700 flex items-center gap-2"
+            className="text-[#E66B1A] hover:text-[#E66B1A] flex items-center gap-2"
           >
             ← Back to Games
           </Link>
@@ -87,11 +87,11 @@ export default async function GameDetailPage({
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="bg-[#1E1E1E]-500 rounded-lg shadow-md overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
             {/* Left Column - Images */}
             <div>
-              <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-200">
+              <div className="relative aspect-square rounded-lg overflow-hidden bg-[#1E1E1E]-200">
                 {game.images && game.images.length > 0 ? (
                   <Image
                     src={game.images[0]}
@@ -101,7 +101,7 @@ export default async function GameDetailPage({
                     priority
                   />
                 ) : (
-                  <div className="flex items-center justify-center h-full text-gray-400">
+                  <div className="flex items-center justify-center h-full text-[#E66B1A]">
                     <span className="text-6xl">🎮</span>
                   </div>
                 )}
@@ -111,9 +111,9 @@ export default async function GameDetailPage({
               {game.images && game.images.length > 1 && (
                 <div className="grid grid-cols-4 gap-2 mt-4">
                   {game.images.slice(1, 5).map((image, index) => (
-                    <div 
-                      key={index} 
-                      className="relative aspect-square rounded-md overflow-hidden bg-gray-200"
+                    <div
+                      key={index}
+                      className="relative aspect-square rounded-md overflow-hidden bg-[#1E1E1E]"
                     >
                       <Image
                         src={image}
@@ -130,7 +130,7 @@ export default async function GameDetailPage({
             {/* Right Column - Details */}
             <div className="flex flex-col">
               <div className="flex-1">
-                <h1 className="text-3xl font-bold text-gray-900 mb-4">
+                <h1 className="text-3xl font-bold text-[#E66B1A] mb-4">
                   {game.title}
                 </h1>
 
@@ -139,7 +139,7 @@ export default async function GameDetailPage({
                   {game.genre.map((g) => (
                     <span
                       key={g}
-                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium"
+                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-md text-sm font-medium"
                     >
                       {g}
                     </span>

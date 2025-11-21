@@ -16,17 +16,17 @@ export default function Navbar() {
 	}
 
 	return (
-		<nav className='shadow-sm border-b bg-[#1E1E1E]'>
+		<nav className='shadow-sm border-b bg-[#f4f6fa]'>
 			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
 				<div className='flex justify-between h-16 items-center'>
-					<Link href="/" className='text-xl font-bold text-[#E66B1A]'>
+					<Link href="/" className='text-md font-press-start text-[#E66B1A]'>
 						GameTrade
 					</Link>
 					<div className='sm:hidden'>
 						<button
 							type='button'
 							onClick={toggleMenu}
-							className='inline-flex items-center justify-center p-2 rounded-md text-[#E66B1A]'
+							className='font-press-startinline-flex items-center justify-center p-2 rounded-md text-[#16181c]'
 							aria-expanded={isOpen}
 						>
 							<svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -40,7 +40,7 @@ export default function Navbar() {
 					</div>
 					<div className='hidden sm:flex sm:items-center sm:gap-6'>
 						{navLinks.map((link) => (
-							<Link key={link.href} href={link.href} className='text-[#ff9752f5] hover:text-[#E66B1A]'>
+							<Link key={link.href} href={link.href} className='text-[#16181c] text-sm font-press-start hover:text-[#E66B1A]'>
 								{link.label}
 							</Link>
 						))}
@@ -55,7 +55,7 @@ export default function Navbar() {
 						key={link.href}
 						href={link.href} 
 						onClick={() => setIsOpen(false)}
-						className="block px-3 py-2 rounded-md text-base font-medium text-[#fbdbc5] hover:bg-gray-50 hover:text-[#E66B1A]"
+						className="block px-3 py-2 rounded-sm text-[#2e3136] text-sm font-press-start hover:bg-gray-50 hover:text-[#E66B1A]"
 						>
 						{link.label}
 						</Link>

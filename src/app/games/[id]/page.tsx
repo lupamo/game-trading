@@ -72,15 +72,15 @@ export default async function GameDetailPage({
   })
 
   return (
-    <div className="min-h-screen bg-[#1E1E1E]">
+    <div className="min-h-screen bg-[#f4f6fa]">
       {/* Header */}
-      <div className="bg-[#1E1E1E] shadow-sm border-b">
+      <div className="bg-[#f4f6fa] shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <Link 
             href="/games" 
-            className="text-[#E66B1A] hover:text-[#E66B1A] flex items-center gap-2"
+            className="font-press-start text-sm text-[#E66B1A] hover:text-[#E66B1A] flex items-center gap-2"
           >
-            ← Back to Games
+            ← Back
           </Link>
         </div>
       </div>
@@ -101,8 +101,13 @@ export default async function GameDetailPage({
                     priority
                   />
                 ) : (
-                  <div className="flex items-center justify-center h-full text-[#E66B1A]">
-                    <span className="text-6xl">🎮</span>
+                  <div className="relative flexitems-center justify-center h-full text-[#E66B1A]">
+                    <Image
+                      src="/no-image.png"
+                      alt='no image available'
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                 )}
               </div>

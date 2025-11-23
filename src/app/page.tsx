@@ -89,10 +89,30 @@ export default async function Home() {
           </div>
         </div>
       </div>
+      <div className="max-w-7xl flex flex-col md:flex-row items-center gap-8 bg-gray-200">
+        <div className="flex-1 w-full max-w-md md:max-w-none py-6">
+          <div className="relative w-full h-[250px] md:h-[250px] overflow-hidden">
+            <Image
+              src="/retrobg.png"
+              alt="Game Exchange"
+              fill
+              style={{ objectFit: "cover" }}
+              priority
+              className="w-full h-full"
+            />
+          </div>
+        </div>
+        <div className="flex-1 text-center md:text-left px-4">
+          <h3 className="font-bold text-lg text-gray-900 mb-2">Game Exchange</h3>
+          <p className="text-sm text-gray-500">
+            Trade your games with other gamers easily.
+          </p>
+        </div>
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 mt-12">
         <h2 className="text-xl md:text-2xl text-[#E66B1A] font-press-start mb-6">Featured Games</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {data.games.map((game) => (
             <GameCard key={game.id} game={game} />
           ))}

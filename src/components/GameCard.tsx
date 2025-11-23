@@ -29,14 +29,13 @@ export function GameCard({ game }: { game: Game }) {
 
   return (
     <Link href={`/games/${game.id}`}>
-      <div className="bg-white rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden cursor-pointer">
+      <div className="bg-white rounded-md shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden cursor-pointer">
         <div className="relative h-48 bg-gray-200">
           <img
             src={imageUrl}
             alt={game.title}
             className="w-full h-full object-cover"
             onError={(e) => {
-              // Use data URI instead of file path
               e.currentTarget.src = placeholderImage
             }}
           />
@@ -48,19 +47,11 @@ export function GameCard({ game }: { game: Game }) {
           </div>
         </div>
 
-        {/* Game Info */}
         <div className="p-4">
           <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">
             {game.title}
           </h3>
-          
-          {game.description && (
-            <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-              {game.description}
-            </p>
-          )}
 
-          {/* Genres */}
           {game.genre.length > 0 && (
             <div className="flex flex-wrap gap-1 mb-3">
               {game.genre.slice(0, 3).map((g) => (
@@ -74,7 +65,6 @@ export function GameCard({ game }: { game: Game }) {
             </div>
           )}
 
-          {/* User Info */}
           <div className="flex items-center pt-3 border-t border-gray-200">
             <div className="flex-shrink-0">
               {game.user.avatar ? (

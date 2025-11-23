@@ -85,11 +85,9 @@ export default async function GameDetailPage({
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="bg-[#1E1E1E]-500 rounded-lg shadow-md overflow-hidden">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
-            {/* Left Column - Images */}
             <div>
               <div className="relative aspect-square rounded-lg overflow-hidden bg-[#1E1E1E]-200">
                 {game.images && game.images.length > 0 ? (
@@ -112,7 +110,6 @@ export default async function GameDetailPage({
                 )}
               </div>
 
-              {/* Thumbnail Gallery */}
               {game.images && game.images.length > 1 && (
                 <div className="grid grid-cols-4 gap-2 mt-4">
                   {game.images.slice(1, 5).map((image, index) => (
@@ -151,7 +148,6 @@ export default async function GameDetailPage({
                   ))}
                 </div>
 
-                {/* Platform and Condition */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-gray-50 p-4 rounded-lg">
                     <p className="text-sm text-gray-600 mb-1">Platform</p>
@@ -163,7 +159,6 @@ export default async function GameDetailPage({
                   </div>
                 </div>
 
-                {/* Description */}
                 <div className="mb-6">
                   <h2 className="text-lg font-semibold text-gray-900 mb-2">
                     Description

@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { auth } from '@/auth'
+import { FiltersSidebar } from '@/components/FiltersSidebar'
 import { GameCard } from '@/components/GameCard'
 
 interface Game {
@@ -122,83 +123,6 @@ export default async function GamesPage({
   )
 }
 
-function FiltersSidebar({ currentParams }: { currentParams: any }) {
-  return (
-    <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
-      <h2 className="text-[10px] font-press-start mb-4">Filters</h2>
-
-      <form action="/games" method="get" className="space-y-6">
-        <div>
-          <label className="block text-[10px] font-press-start text-gray-700 mb-2">
-            Search
-          </label>
-          <input
-            type="text"
-            name="search"
-            defaultValue={currentParams.search}
-            placeholder="Search games..."
-            className="w-full text-[10px] font-press-start px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-
-        {/* Platform */}
-        <div>
-          <label className="block text-[10px] font-press-start text-gray-700 mb-2">
-            Platform
-          </label>
-          <select
-            name="platform"
-            defaultValue={currentParams.platform || ''}
-            className="w-full text-[10px] font-press-start px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option className="text-[10px] font-press-start" value="">All Platforms</option>
-            <option className="text-[10px] font-press-start" value="PS5">PlayStation 5</option>
-            <option className="text-[10px] font-press-start" value="PS4">PlayStation 4</option>
-            <option className="text-[10px] font-press-start" value="Xbox Series X/S">Xbox Series X/S</option>
-            <option className="text-[10px] font-press-start" value="Xbox One">Xbox One</option>
-            <option className="text-[10px] font-press-start" value="PC">PC</option>
-            <option className="text-[10px] font-press-start" value="Nintendo Switch">Nintendo Switch</option>
-            <option className="text-[10px] font-press-start" value="Other">Other</option>
-          </select>
-        </div>
-
-        {/* Condition */}
-        <div>
-          <label className="block text-[10px] font-press-start text-gray-700 mb-2">
-            Condition
-          </label>
-          <select
-            name="condition"
-            defaultValue={currentParams.condition || ''}
-            className="w-full text-[12px] font-press-start px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">All Conditions</option>
-            <option value="New">New</option>
-            <option value="Like New">Like New</option>
-            <option value="Good">Good</option>
-            <option value="Fair">Fair</option>
-          </select>
-        </div>
-
-        <div className="space-y-2">
-          <button
-            type="submit"
-            className="w-full text-[10px] font-press-start bg-[#E66B1A] text-white py-2 rounded-md hover:bg-[#D55A1A] transition"
-          >
-            Apply Filters
-          </button>
-          <Link
-            href="/games"
-            className="block w-full text-[10px] font-press-start text-center py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition"
-          >
-            Clear Filters
-          </Link>
-        </div>
-      </form>
-    </div>
-  )
-}
-
 function Pagination({ pagination }: { pagination: GamesResponse['pagination'] }) {
   const { page, totalPages } = pagination
 
@@ -263,7 +187,6 @@ function EmptyState() {
   )
 }
 
-// Loading Skeleton
 function LoadingSkeleton() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">

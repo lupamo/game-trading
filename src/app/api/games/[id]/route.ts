@@ -7,7 +7,6 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    // Check authentication
     const session = await auth()
     if (!session) {
       return NextResponse.json(
@@ -16,10 +15,8 @@ export async function GET(
       )
     }
 
-    // Await params (Next.js 15 requirement)
     const { id } = await params
 
-    // Fetch the game from database
     const game = await prisma.game.findUnique({
       where: {
         id: id
@@ -37,7 +34,6 @@ export async function GET(
       }
     })
 
-    // If game doesn't exist
     if (!game) {
       return NextResponse.json(
         { error: 'Game not found' },

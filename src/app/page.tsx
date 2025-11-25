@@ -88,24 +88,23 @@ export default async function Home() {
           </div>
         </div>
       </div>
-      <div className="max-w-7xl flex flex-col md:flex-row items-center gap-8 ">
-        <div className="flex-1 w-full max-w-md md:max-w-none py-6">
-          <div className="relative w-full h-[250px] md:h-[250px] overflow-hidden">
+      <div className="max-w-7xl grid justify-items-center grid-cols-1 md:grid-cols-1 gap-1">
+        <div className="flex-1 text-center md:text-left px-4">
+          <h3 className="font-press-start text-lg text-[#E66B1A] mb-2">Level Up your Inventory</h3>
+          <p className="text-[10px] font-press-start text-gray-500">
+            Swap games you own for ones you want. Discover new titles and expand your collection without spending a dime.
+          </p>
+        </div>
+        <div className="flex-1 w-full max-w-md md:max-w-none py-1">
+          <div className="relative w-full h-[350px] md:h-[450px] overflow-hidden">
             <Image
               src="/retrobg.png"
               alt="Game Exchange"
               fill
-              style={{ objectFit: "cover" }}
               priority
-              className="w-full h-full"
+              className="object-contain"
             />
           </div>
-        </div>
-        <div className="flex-1 text-center md:text-left px-4">
-          <h3 className="font-bold text-lg text-gray-900 mb-2">Game Exchange</h3>
-          <p className="text-sm text-gray-500">
-            Trade your games with other gamers easily.
-          </p>
         </div>
       </div>
 

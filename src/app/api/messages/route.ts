@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 
-// POST - Send a message
 export async function POST(req: NextRequest) {
   try {
     const session = await auth()
@@ -24,7 +23,6 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Verify user is part of the trade
     const trade = await prisma.trade.findUnique({
       where: { id: tradeId }
     })
@@ -43,7 +41,6 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Create message
     const message = await prisma.message.create({
       data: {
         content,

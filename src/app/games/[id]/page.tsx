@@ -3,6 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
+import { DeleteGame } from '@/components/DeleteGame'
 
 interface Game {
   id: string
@@ -71,9 +72,10 @@ export default async function GameDetailPage({
     day: 'numeric'
   })
 
+  const isOwner = session.user?.id === game.user.id
+
   return (
     <div className="min-h-screen bg-[#f4f6fa]">
-      {/* Header */}
       <div className="bg-[#f4f6fa] shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <Link 
@@ -87,19 +89,26 @@ export default async function GameDetailPage({
 
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="bg-[#1E1E1E]-500 rounded-lg shadow-md overflow-hidden">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-6">
-            <div>
-              <div className="relative aspect-square rounded-lg overflow-hidden bg-[#1E1E1E]-200">
-                {game.images && game.images.length > 0 ? (
-                  <Image
-                    src={game.images[0]}
-                    alt={game.title}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-2">
+            <div className="relative w-full overflow-hidden rounded-md">
+              <div className="flex overflow-x-scroll snap-x snap-mandatory scrollbar-thin scrollbar-thumb-[#E66B1A]/50 scrollbar-track-gray-200">
+                {game.images?.length > 0 ? (
+                  game.images.map((img, index) => (
+                    <div
+                      key={index}
+                      className='relative min-w-full aspect-square snap-center shrink-0'
+                    >
+                    <Image
+                      src={img}
+                      alt={`${game.title} ${index}`}
+                      fill
+                      className="object-cover"
+                      priority={index === 0}
+                    />
+                  </div>
+                  ))
                 ) : (
-                  <div className="relative flexitems-center justify-center h-full text-[#E66B1A]">
+                  <div className="relative min-w-full aspect-square snap-center">
                     <Image
                       src="/no-image.png"
                       alt='no image available'
@@ -113,9 +122,10 @@ export default async function GameDetailPage({
               {game.images && game.images.length > 1 && (
                 <div className="grid grid-cols-4 gap-2 mt-4">
                   {game.images.slice(1, 5).map((image, index) => (
-                    <div
+                    <a
                       key={index}
-                      className="relative aspect-square rounded-md overflow-hidden bg-[#1E1E1E]"
+                      href={`#image-gallery-item-${index}`}
+                      className="relative aspect-square rounded-md overflow-hidden border-2 border-transparent hover:border-[#E66B1A] transition cursor-pointer"
                     >
                       <Image
                         src={image}
@@ -123,20 +133,18 @@ export default async function GameDetailPage({
                         fill
                         className="object-cover"
                       />
-                    </div>
+                    </a>
                   ))}
                 </div>
               )}
             </div>
 
-            {/* Right Column - Details */}
             <div className="flex flex-col">
               <div className="flex-1">
                 <h1 className="text-3xl font-bold text-[#E66B1A] mb-4">
                   {game.title}
                 </h1>
 
-                {/* Genres */}
                 <div className="flex flex-wrap gap-2 mb-4">
                   {game.genre.map((g) => (
                     <span
@@ -174,10 +182,9 @@ export default async function GameDetailPage({
                 </div>
               </div>
 
-              {/* Owner Information */}
               <div className="border-t pt-6">
                 <h2 className="text-lg font-semibold text-gray-900 mb-4">
-                  Game Owner
+                  {isOwner ? 'Your Game' : 'Game Owner'}
                 </h2>
                 <div className="flex items-center gap-4 mb-4">
                   {game.user.avatar ? (
@@ -201,15 +208,20 @@ export default async function GameDetailPage({
                   </div>
                 </div>
 
-                {/* Action Buttons */}
-                <div className="flex gap-3">
-                  <button className="flex-1 bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition font-semibold">
-                    Request Trade
-                  </button>
-                  <button className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-semibold">
-                    Message
-                  </button>
-                </div>
+                {isOwner ? (
+                  <div className="flex gap-3">
+                    <DeleteGame gameId={game.id} />
+                  </div>
+                ) : (
+                  <div className="flex gap-3">
+                    <button className="flex-1 bg-[#E66B1A] text-white py-3 rounded-lg hover:bg-[#D55A1A] transition font-semibold">
+                      Request Trade
+                    </button>
+                    <button className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-semibold">
+                      Message
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>

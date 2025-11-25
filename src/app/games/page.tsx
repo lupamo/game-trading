@@ -8,10 +8,10 @@ interface Game {
   id: string
   title: string
   platform: string
+  genre: string[]
   condition: string
   description: string | null
   images: string[]
-  genre: string[]
   createdAt: string
   user: {
     id: string
@@ -35,7 +35,6 @@ interface GamesResponse {
 async function getGames(searchParams: {
   platform?: string
   search?: string
-  genre?: string
   condition?: string
   page?: string
 }): Promise<GamesResponse> {
@@ -43,7 +42,6 @@ async function getGames(searchParams: {
   
   if (searchParams.platform) params.append('platform', searchParams.platform)
   if (searchParams.search) params.append('search', searchParams.search)
-  if (searchParams.genre) params.append('genre', searchParams.genre)
   if (searchParams.condition) params.append('condition', searchParams.condition)
   if (searchParams.page) params.append('page', searchParams.page)
 
@@ -73,7 +71,6 @@ export default async function GamesPage({
   const params = {
     platform: typeof resolvedSearchParams.platform === 'string' ? resolvedSearchParams.platform : undefined,
     search: typeof resolvedSearchParams.search === 'string' ? resolvedSearchParams.search : undefined,
-    genre: typeof resolvedSearchParams.genre === 'string' ? resolvedSearchParams.genre : undefined,
     condition: typeof resolvedSearchParams.condition === 'string' ? resolvedSearchParams.condition : undefined,
     page: typeof resolvedSearchParams.page === 'string' ? resolvedSearchParams.page : '1',
   }
@@ -86,14 +83,11 @@ export default async function GamesPage({
         <div className="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Browse Games</h1>
-              <p className="text-gray-600 mt-1">
-                {data.pagination.total} games available for trade
-              </p>
+              <h1 className="text-xl font-bold font-press-start text-[#E66B1A]">Browse Games</h1>
             </div>
             <Link
               href="/games/add"
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+              className="bg-[#E66B1A] text-white px-6 py-2 rounded-lg hover:bg-[#D55A1A] transition"
             >
               + Add Game
             </Link>
@@ -103,12 +97,9 @@ export default async function GamesPage({
 
       <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Filters Sidebar */}
           <aside className="lg:w-64 flex-shrink-0">
             <FiltersSidebar currentParams={params} />
           </aside>
-
-          {/* Games Grid */}
           <main className="flex-1">
             <Suspense fallback={<LoadingSkeleton />}>
               {data.games.length === 0 ? (
@@ -120,8 +111,6 @@ export default async function GamesPage({
                       <GameCard key={game.id} game={game} />
                     ))}
                   </div>
-
-                  {/* Pagination */}
                   <Pagination pagination={data.pagination} />
                 </>
               )}
@@ -136,12 +125,11 @@ export default async function GamesPage({
 function FiltersSidebar({ currentParams }: { currentParams: any }) {
   return (
     <div className="bg-white rounded-lg shadow-md p-6 sticky top-4">
-      <h2 className="font-bold text-lg mb-4">Filters</h2>
+      <h2 className="text-[10px] font-press-start mb-4">Filters</h2>
 
       <form action="/games" method="get" className="space-y-6">
-        {/* Search */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-[10px] font-press-start text-gray-700 mb-2">
             Search
           </label>
           <input
@@ -149,40 +137,40 @@ function FiltersSidebar({ currentParams }: { currentParams: any }) {
             name="search"
             defaultValue={currentParams.search}
             placeholder="Search games..."
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full text-[10px] font-press-start px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         {/* Platform */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-[10px] font-press-start text-gray-700 mb-2">
             Platform
           </label>
           <select
             name="platform"
             defaultValue={currentParams.platform || ''}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full text-[10px] font-press-start px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="">All Platforms</option>
-            <option value="PS5">PlayStation 5</option>
-            <option value="PS4">PlayStation 4</option>
-            <option value="Xbox Series X/S">Xbox Series X/S</option>
-            <option value="Xbox One">Xbox One</option>
-            <option value="PC">PC</option>
-            <option value="Nintendo Switch">Nintendo Switch</option>
-            <option value="Other">Other</option>
+            <option className="text-[10px] font-press-start" value="">All Platforms</option>
+            <option className="text-[10px] font-press-start" value="PS5">PlayStation 5</option>
+            <option className="text-[10px] font-press-start" value="PS4">PlayStation 4</option>
+            <option className="text-[10px] font-press-start" value="Xbox Series X/S">Xbox Series X/S</option>
+            <option className="text-[10px] font-press-start" value="Xbox One">Xbox One</option>
+            <option className="text-[10px] font-press-start" value="PC">PC</option>
+            <option className="text-[10px] font-press-start" value="Nintendo Switch">Nintendo Switch</option>
+            <option className="text-[10px] font-press-start" value="Other">Other</option>
           </select>
         </div>
 
         {/* Condition */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-[10px] font-press-start text-gray-700 mb-2">
             Condition
           </label>
           <select
             name="condition"
             defaultValue={currentParams.condition || ''}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full text-[12px] font-press-start px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">All Conditions</option>
             <option value="New">New</option>
@@ -192,38 +180,16 @@ function FiltersSidebar({ currentParams }: { currentParams: any }) {
           </select>
         </div>
 
-        {/* Genre */}
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Genre
-          </label>
-          <select
-            name="genre"
-            defaultValue={currentParams.genre || ''}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">All Genres</option>
-            <option value="Action">Action</option>
-            <option value="Adventure">Adventure</option>
-            <option value="RPG">RPG</option>
-            <option value="Sports">Sports</option>
-            <option value="Racing">Racing</option>
-            <option value="Shooter">Shooter</option>
-            <option value="Strategy">Strategy</option>
-            <option value="Puzzle">Puzzle</option>
-          </select>
-        </div>
-
         <div className="space-y-2">
           <button
             type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+            className="w-full text-[10px] font-press-start bg-[#E66B1A] text-white py-2 rounded-md hover:bg-[#D55A1A] transition"
           >
             Apply Filters
           </button>
           <Link
             href="/games"
-            className="block w-full text-center py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition"
+            className="block w-full text-[10px] font-press-start text-center py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition"
           >
             Clear Filters
           </Link>

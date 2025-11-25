@@ -61,7 +61,6 @@ export default async function Home() {
 
   return (    
     <div className="font-sans min-h-screen pb-20 bg-[#f4f6fa]">
-      {/* Hero Section */}
       <div className="w-full bg-gradient-to-r from-gray-100 to-gray-50 py-8 md:py-20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row items-center gap-8">
@@ -75,7 +74,7 @@ export default async function Home() {
             </div>
             
             <div className="flex-1 w-full max-w-md md:max-w-none">
-              <div className="relative w-full h-[300px] md:h-[400px] rounded-md overflow-hidden shadow-xl">
+              <div className="relative w-full h-[300px] md:h-[400px] rounded-md overflow-hidden shadow-xl py-8">
                 <Image
                   src="/retro.gif"
                   alt="Game Controller"
@@ -89,7 +88,7 @@ export default async function Home() {
           </div>
         </div>
       </div>
-      <div className="max-w-7xl flex flex-col md:flex-row items-center gap-8 bg-gray-200">
+      <div className="max-w-7xl flex flex-col md:flex-row items-center gap-8 ">
         <div className="flex-1 w-full max-w-md md:max-w-none py-6">
           <div className="relative w-full h-[250px] md:h-[250px] overflow-hidden">
             <Image

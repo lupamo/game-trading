@@ -141,7 +141,7 @@ export default async function GameDetailPage({
 
             <div className="flex flex-col">
               <div className="flex-1">
-                <h1 className="text-3xl font-bold text-[#E66B1A] mb-4">
+                <h1 className="text-[14px] font-press-start text-[#E66B1A] mb-4">
                   {game.title}
                 </h1>
 
@@ -149,7 +149,7 @@ export default async function GameDetailPage({
                   {game.genre.map((g) => (
                     <span
                       key={g}
-                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-md text-sm font-medium"
+                      className="px-3 py-1 bg-blue-100 text-blue-800 rounded-md text-[8px] font-press-start"
                     >
                       {g}
                     </span>
@@ -158,32 +158,32 @@ export default async function GameDetailPage({
 
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-1">Platform</p>
-                    <p className="font-semibold text-gray-900">{game.platform}</p>
+                    <p className="text-[9px] text-gray-600 mb-1 font-press-start">Platform</p>
+                    <p className="font-press-start text-gray-900">{game.platform}</p>
                   </div>
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <p className="text-sm text-gray-600 mb-1">Condition</p>
-                    <p className="font-semibold text-gray-900">{game.condition}</p>
+                    <p className="text-[9px] text-gray-600 mb-1 font-press-start">Condition</p>
+                    <p className="font-press-start text-gray-900">{game.condition}</p>
                   </div>
                 </div>
 
                 <div className="mb-6">
-                  <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h2 className="text-[12px] font-press-start text-gray-900 mb-2">
                     Description
                   </h2>
-                  <p className="text-gray-700 leading-relaxed">
+                  <p className="text-gray-700 leading-relaxed font-press-start text-[10px]">
                     {game.description || 'No description provided.'}
                   </p>
                 </div>
 
                 {/* Listed Date */}
-                <div className="text-sm text-gray-500 mb-6">
+                <div className="text-[9px] text-gray-500 mb-6 font-press-start">
                   Listed on {formattedDate}
                 </div>
               </div>
 
               <div className="border-t pt-6">
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                <h2 className="text-[13px] font-press-start text-gray-900 mb-4">
                   {isOwner ? 'Your Game' : 'Game Owner'}
                 </h2>
                 <div className="flex items-center gap-4 mb-4">
@@ -196,14 +196,14 @@ export default async function GameDetailPage({
                       className="rounded-full"
                     />
                   ) : (
-                    <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-semibold text-lg">
+                    <div className="w-12 h-12 rounded-full bg-blue-500 flex items-center justify-center text-white font-press-start text-lg">
                       {game.user.name.charAt(0).toUpperCase()}
                     </div>
                   )}
                   <div>
-                    <p className="font-semibold text-gray-900">{game.user.name}</p>
+                    <p className="font-press-start text-gray-900">{game.user.name}</p>
                     {game.user.location && (
-                      <p className="text-sm text-gray-600">📍 {game.user.location}</p>
+                      <p className="text-[9px] press-start text-gray-600">📍 {game.user.location}</p>
                     )}
                   </div>
                 </div>
@@ -214,10 +214,10 @@ export default async function GameDetailPage({
                   </div>
                 ) : (
                   <div className="flex gap-3">
-                    <button className="flex-1 bg-[#E66B1A] text-white py-3 rounded-lg hover:bg-[#D55A1A] transition font-semibold">
+                    <button className="flex-1 bg-[#E66B1A] text-white py-3 rounded-lg hover:bg-[#D55A1A] transition text-[12px] font-press-start">
                       Request Trade
                     </button>
-                    <button className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition font-semibold">
+                    <button className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-[12px] font-press-start">
                       Message
                     </button>
                   </div>

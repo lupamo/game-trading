@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
+import { error } from 'console'
 
 export async function GET(
   request: Request,
@@ -49,4 +50,49 @@ export async function GET(
       { status: 500 }
     )
   }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
+  try  {
+    const session = await auth()
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { error: 'Unauthorized, please log in' },
+        { status: 401 }
+      )
+    }
+    const resolvedParams = await params
+    const game = await prisma.game.findUnique({
+      where: { id: resolvedParams.id }
+    })
+    if (!game) {
+      return NextResponse.json(
+        { error: 'Game not found' },
+        { status: 404 }
+      )
+    }
+    if (game.userId !== session.user.id) {
+      return NextResponse.json(
+        { error: 'You do not have permission to delete this game' },
+        { status: 403 }
+      )
+    }
+    await prisma.game.delete({
+      where: { id: resolvedParams.id }
+    })
+    return NextResponse.json(
+      { message: 'Game deleted successfully' },
+      { status: 200 }
+    )
+  } catch (error) {
+    console.error('Error deleting game:', error)
+    return NextResponse.json(
+      { error: 'Failed to delete game' },
+      { status: 500 }
+    )
+  }
+  
 }

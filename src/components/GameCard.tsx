@@ -39,16 +39,16 @@ export function GameCard({ game }: { game: Game }) {
               e.currentTarget.src = placeholderImage
             }}
           />
-          <div className="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded text-xs font-semibold">
+          <div className="absolute top-2 right-2 bg-blue-600 text-white px-2 py-1 rounded text-[8px] font-press-start">
             {game.platform}
           </div>
-          <div className="absolute top-2 left-2 bg-green-600 text-white px-2 py-1 rounded text-xs font-semibold">
+          <div className="absolute top-2 left-2 bg-green-600 text-white px-2 py-1 rounded text-[8px] font-press-start">
             {game.condition}
           </div>
         </div>
 
         <div className="p-4">
-          <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-1">
+          <h3 className="font-press-start text-[12px] text-gray-900 mb-2 line-clamp-1">
             {game.title}
           </h3>
 
@@ -57,7 +57,7 @@ export function GameCard({ game }: { game: Game }) {
               {game.genre.slice(0, 3).map((g) => (
                 <span
                   key={g}
-                  className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
+                  className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-[8px] font-press-start"
                 >
                   {g}
                 </span>
@@ -74,17 +74,17 @@ export function GameCard({ game }: { game: Game }) {
                   className="w-8 h-8 rounded-full"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold">
+                <div className="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-press-start">
                   {game.user.name.charAt(0).toUpperCase()}
                 </div>
               )}
             </div>
             <div className="ml-3 flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">
+              <p className="text-[9px] font-press-start text-gray-900 truncate">
                 {game.user.name}
               </p>
               {game.user.location && (
-                <p className="text-xs text-gray-500 truncate">
+                <p className="text-[9px] text-gray-500 truncate font-press-start">
                   {game.user.location}
                 </p>
               )}

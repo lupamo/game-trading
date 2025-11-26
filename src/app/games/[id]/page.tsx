@@ -214,10 +214,7 @@ export default async function GameDetailPage({
                   </div>
                 ) : (
                   <div className="flex gap-3">
-                    <button className="flex-1 bg-[#E66B1A] text-white py-3 rounded-lg hover:bg-[#D55A1A] transition text-[12px] font-press-start">
-                      Request Trade
-                    </button>
-                    <button className="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition text-[12px] font-press-start">
+                    <button className="px-6 py-3 border border-gray-300 bg-[#E66B1A] rounded-lg hover:bg-[#D55A1A] transition text-[12px] font-press-start">
                       Message
                     </button>
                   </div>

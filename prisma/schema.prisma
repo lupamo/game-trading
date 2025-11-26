@@ -25,11 +25,9 @@ model User {
   updatedAt DateTime @updatedAt
 
   games           Game[]
-  tradesOffered   Trade[]   @relation("TradeOfferer")
-  tradesReceived  Trade[]   @relation("TradeReceiver")
-  ratingsGiven    Rating[]  @relation("RatingForm")
-  ratingsRecieved Rating[]  @relation("RatingTo")
-  messages        Message[]
+  sentMessages    Message[]   @relation("MessageSender")
+  receivedMessages    Message[]   @relation("MessageReceiver")
+  conversations   Conversation[]    @relation("ConversationParticipants")
 }
 
 model Game {
@@ -43,80 +41,34 @@ model Game {
   userId     String
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())
-  updateAt   DateTime @updatedAt
-
-  tradesAsOffered   Trade[] @relation("OfferedGame")
-  tradesAsRequested Trade[] @relation("RequestedGame")
+  updatedAt   DateTime @updatedAt
 
   @@index([userId])
   @@index([platform])
 }
 
-model Trade {
-  id     String      @id @default(cuid())
-  status TradeStatus @default(PENDING)
-
-  offererId String
-  offerer   User   @relation("TradeOfferer", fields: [offererId], references: [id])
-
-  receiverId String
-  receiver   User   @relation("TradeReceiver", fields: [receiverId], references: [id])
-
-  OfferedGameId String
-  OfferedGame   Game   @relation("OfferedGame", fields: [OfferedGameId], references: [id])
-
-  requestedGameId String
-  requestedGame   Game   @relation("RequestedGame", fields: [requestedGameId], references: [id])
-
-  messages Message[]
-  rating   Rating?
-
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  completedAt DateTime?
-
-  @@index([offererId])
-  @@index([receiverId])
-  @@index([status])
-}
-
-enum TradeStatus {
-  PENDING
-  ACCEPTED
-  DECLINED
-  COMPLETED
-  CANCELLED
+model Conversation {
+  id    String    @id @default(cuid())
+  participants    User[]    @relation("ConversationParticipants")
+  messages    Message[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model Message {
   id        String   @id @default(cuid())
   content   String
   senderId  String
-  sender    User     @relation(fields: [senderId], references: [id])
-  tradeId   String
-  trade     Trade    @relation(fields: [tradeId], references: [id], onDelete: Cascade)
+  sender    User     @relation("MessageSender", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId  String
+  receiver   User   @relation("MessageReceiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  conversationId  String
+  conversations   Conversation    @relation(fields: [conversationId], references: [id], onDelete: Cascade)
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
 
-  @@index([tradeId])
+  @@index([conversationId])
   @@index([senderId])
-}
-
-model Rating {
-  id      String  @id @default(cuid())
-  rating  Int // 1-5 stars
-  comment String?
-
-  fromUserId String
-  fromUser   User   @relation("RatingForm", fields: [fromUserId], references: [id])
-
-  toUserId String
-  toUser   User   @relation("RatingTo", fields: [toUserId], references: [id])
-
-  tradeId String @unique
-  trade   Trade  @relation(fields: [tradeId], references: [id])
-
-  createdAt DateTime @default(now())
-
-  @@index([toUserId])
+  @@index([receiverId])
+  @@index([createdAt])
 }

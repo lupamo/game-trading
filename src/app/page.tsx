@@ -89,8 +89,8 @@ export default async function Home() {
         </div>
       </div>
       <div className="max-w-7xl grid justify-items-center grid-cols-1 md:grid-cols-1 gap-1">
-        <div className="flex-1 text-center md:text-left px-4">
-          <h3 className="font-press-start text-lg text-[#E66B1A] mb-2">Level Up your Inventory</h3>
+        <div className="flex-1 text-center mt-8 md:text-left border border-black px-4">
+          <h3 className="font-press-start text-center text-2xl text-[#E66B1A] mb-3">Level Up your Inventory</h3>
           <p className="text-[10px] font-press-start text-gray-500">
             Swap games you own for ones you want. Discover new titles and expand your collection without spending a dime.
           </p>

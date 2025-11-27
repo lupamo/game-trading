@@ -214,9 +214,9 @@ export default async function GameDetailPage({
                   </div>
                 ) : (
                   <div className="flex gap-3">
-                    <button className="px-6 py-3 border border-gray-300 bg-[#E66B1A] rounded-lg hover:bg-[#D55A1A] transition text-[12px] font-press-start">
+                    <Link href={`/messages/new?recipientId=${game.user.id}`} className="px-6 py-3 border border-gray-300 bg-[#E66B1A] rounded-lg hover:bg-[#D55A1A] transition text-[12px] font-press-start">
                       Message
-                    </button>
+                    </Link>
                   </div>
                 )}
               </div>

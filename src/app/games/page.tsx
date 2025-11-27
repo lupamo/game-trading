@@ -46,7 +46,8 @@ async function getGames(searchParams: {
   if (searchParams.condition) params.append('condition', searchParams.condition)
   if (searchParams.page) params.append('page', searchParams.page)
 
-  const res = await fetch(`http://localhost:3000/api/games?${params.toString()}`, {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  const res = await fetch(`${baseUrl}/api/games?${params.toString()}`, {
     cache: 'no-store'
   })
 
@@ -60,7 +61,7 @@ async function getGames(searchParams: {
 export default async function GamesPage({
   searchParams,
 }: {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
   const session = await auth()
 

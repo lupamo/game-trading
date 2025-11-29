@@ -81,7 +81,6 @@ export default async function ConversationPage({
   const resolvedParams = await params
   const messages = await getMessages(resolvedParams.id, session.user.id)
 
-  // Get the other participant from messages
   const currentUserId = session!.user!.id
 
   const otherParticipant = messages[0]?.sender.id !== currentUserId

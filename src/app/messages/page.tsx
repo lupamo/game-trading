@@ -115,7 +115,6 @@ export default async function MessagesPage() {
         ) : (
           <div className="bg-white rounded-lg shadow-md divide-y">
             {conversationsWithOtherParticipant.map((conversation) => {
-              // Get the other participant (not the current user)
               const otherParticipant = conversation.participants[0]
               const lastMessage = conversation.messages[0]
 
@@ -139,7 +138,7 @@ export default async function MessagesPage() {
                           className="rounded-full"
                         />
                       ) : (
-                        <div className="w-12 h-12 rounded-full bg-[#E66B1A] flex items-center justify-center text-white font-semibold text-lg">
+                        <div className="w-12 h-12 rounded-full bg-[#E66B1A] flex items-center justify-center text-white font-press-start text-[12px]">
                           {otherParticipant.name.charAt(0).toUpperCase()}
                         </div>
                       )}
@@ -148,7 +147,7 @@ export default async function MessagesPage() {
                     {/* Content */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <h3 className="text-base font-semibold text-gray-900 truncate">
+                        <h3 className="text-[12px] font-press-start text-gray-900 truncate">
                           {otherParticipant.name}
                         </h3>
                         {lastMessage && (
@@ -159,7 +158,7 @@ export default async function MessagesPage() {
                       </div>
 
                       {lastMessage && (
-                        <p className="text-sm text-gray-600 truncate">
+                        <p className="text-[9px] font-press-start text-gray-600 truncate">
                           {lastMessage.sender.id === session.user?.id ? 'You: ' : ''}
                           {lastMessage.content}
                         </p>
@@ -169,7 +168,7 @@ export default async function MessagesPage() {
                     {/* Unread badge */}
                     {conversation.unreadCount > 0 && (
                       <div className="flex-shrink-0">
-                        <span className="inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-[#E66B1A] rounded-full">
+                        <span className="inline-flex items-center justify-center w-6 h-6 text-[12px] font-press-start text-white bg-[#E66B1A] rounded-full">
                           {conversation.unreadCount}
                         </span>
                       </div>

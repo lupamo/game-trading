@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { auth } from '@/auth'
+import { prisma } from '@/lib/prisma'
 import { FiltersSidebar } from '@/components/FiltersSidebar'
 import { GameCard } from '@/components/GameCard'
 
@@ -39,23 +40,60 @@ async function getGames(searchParams: {
   condition?: string
   page?: string
 }): Promise<GamesResponse> {
-  const params = new URLSearchParams()
-  
-  if (searchParams.platform) params.append('platform', searchParams.platform)
-  if (searchParams.search) params.append('search', searchParams.search)
-  if (searchParams.condition) params.append('condition', searchParams.condition)
-  if (searchParams.page) params.append('page', searchParams.page)
+  const page = parseInt(searchParams.page || '1')
+  const limit = 12
+  const skip = (page - 1) * limit
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
-  const res = await fetch(`${baseUrl}/api/games?${params.toString()}`, {
-    cache: 'no-store'
-  })
+  const where: Record<string, unknown> = {}
 
-  if (!res.ok) {
-    throw new Error('Failed to fetch games')
+  if (searchParams.platform) {
+    where.platform = searchParams.platform
+  }
+  if (searchParams.search) {
+    where.title = {
+      contains: searchParams.search,
+      mode: 'insensitive'
+    }
+  }
+  if (searchParams.condition) {
+    where.condition = searchParams.condition
   }
 
-  return res.json()
+  const [games, total] = await Promise.all([
+    prisma.game.findMany({
+      where,
+      include: {
+        user: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            avatar: true,
+            location: true,
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      },
+      skip,
+      take: limit,
+    }),
+    prisma.game.count({ where })
+  ])
+
+  return {
+    games: games.map(game => ({
+      ...game,
+      createdAt: game.createdAt.toISOString()
+    })),
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit)
+    }
+  }
 }
 
 export default async function GamesPage({
@@ -68,7 +106,8 @@ export default async function GamesPage({
   if (!session) {
     redirect('/login')
   }
-  const resolvedSearchParams = await searchParams;
+  
+  const resolvedSearchParams = await searchParams
 
   const params = {
     platform: typeof resolvedSearchParams.platform === 'string' ? resolvedSearchParams.platform : undefined,
@@ -124,6 +163,7 @@ export default async function GamesPage({
   )
 }
 
+// Keep the rest of your functions (Pagination, EmptyState, LoadingSkeleton) the same
 function Pagination({ pagination }: { pagination: GamesResponse['pagination'] }) {
   const { page, totalPages } = pagination
 
@@ -147,7 +187,7 @@ function Pagination({ pagination }: { pagination: GamesResponse['pagination'] })
             href={`?page=${p}`}
             className={`px-4 py-2 rounded-md ${
               p === page
-                ? 'bg-blue-600 text-white'
+                ? 'bg-[#E66B1A] text-white'
                 : 'border border-gray-300 hover:bg-gray-50'
             }`}
           >
@@ -180,7 +220,7 @@ function EmptyState() {
       </p>
       <Link
         href="/games/add"
-        className="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition"
+        className="inline-block bg-[#E66B1A] text-white px-6 py-3 rounded-lg hover:bg-[#D55A1A] transition"
       >
         Add Your First Game
       </Link>

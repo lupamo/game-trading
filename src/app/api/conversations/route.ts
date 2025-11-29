@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
 
-export async function GET(req: NextRequest) {
+export async function GET() {
 	try {
 		const session = await auth();
 
@@ -51,9 +51,9 @@ export async function GET(req: NextRequest) {
 				updatedAt: 'desc'
 			}
 		})
-		//GEt unred count for each conversation
+		//Get unread count for each conversation
 		const conversationsWithUnread = await Promise.all(
-			conversations.map(async (conv: any) => {
+			conversations.map(async (conv) => {
 				const unreadCount = await prisma.message.count({
 					where: {
 						conversationId: conv.id,
@@ -86,11 +86,11 @@ export async function POST(req: NextRequest) {
 			return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 		}
 		const userId = session.user.id;
-		const { recepientId } = await req.json()
+		const { recipientId } = await req.json()
 
-		if (!recepientId) {
+		if (!recipientId) {
 			return NextResponse.json(
-				{ error: "Recepient ID is required" },
+				{ error: "Recipient ID is required" },
 				{ status: 400 }
 			)
 		}
@@ -109,7 +109,7 @@ export async function POST(req: NextRequest) {
 					{
 						participants: {
 							some: {
-								id: recepientId
+								id: recipientId
 							}
 						}
 					}
@@ -132,7 +132,7 @@ export async function POST(req: NextRequest) {
 		const conversation = await prisma.conversation.create({
 			data: {
 				participants: {
-					connect: [{ id: session.user.id }, { id: recepientId }]
+					connect: [{ id: session.user.id }, { id: recipientId }]
 				}
 			},
 			include: {

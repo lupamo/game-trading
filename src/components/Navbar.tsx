@@ -7,6 +7,7 @@ const navLinks = [
 	{ href: '/games', label: 'Browse Games' },
 	{ href: '/games/add', label: 'Add Game' },
 	{ href: '/dashboard', label: 'Dashboard' },
+	{ href: '/messages', label: 'Messages' },
 ]
 
 export default function Navbar() {

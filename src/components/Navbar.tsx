@@ -6,8 +6,8 @@ import AuthButton from './AuthButton';
 const navLinks = [
 	{ href: '/games', label: 'Browse Games' },
 	{ href: '/games/add', label: 'Add Game' },
-	{ href: '/dashboard', label: 'Dashboard' },
 	{ href: '/messages', label: 'Messages' },
+	{ href: '/dashboard', label: 'Dashboard' },
 ]
 
 export default function Navbar() {
@@ -45,7 +45,6 @@ export default function Navbar() {
 								{link.label}
 							</Link>
 						))}
-						<AuthButton />
 					</div>
 				</div>
 			</div>

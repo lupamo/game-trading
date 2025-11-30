@@ -13,7 +13,7 @@ export default function AuthButton() {
 		return(
 			<button
 				onClick={() => signOut({ callbackUrl: '/'})}
-				className="text-xs px-3 py-1 border font-press-start border-red-500 text-red-500 rounded hover:bg-red-50 transition"
+				className="text-xs px-3 py-1 border font-press-start border-[#E66B1A] text-[#E66B1A] rounded hover:bg-red-50 transition"
 			>
 				Sign Out
 			</button>
@@ -22,7 +22,7 @@ export default function AuthButton() {
 	return (
 		<Link
 			href="/login"
-			className='text-sm px-3 py-1 border border-blue-500 text-blue-500 rounded hover:bg-blue-50 transition'
+			className='text-xs px-3 py-1 border font-press-start border-[#E66B1A] text-[#E66B1A] rounded hover:bg-red-50 transition'
 		>
 			Login
 		</Link>

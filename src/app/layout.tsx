@@ -5,6 +5,8 @@ import Link from "next/link";
 import './globals.css'
 import { SessionProvider } from "next-auth/react";
 import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+
 
 export const metadata: Metadata = {
   title: "Game Trading Platform",
@@ -22,6 +24,7 @@ export default function RootLayout({
         <AuthProvider>
           <Navbar />
           {children}
+          <Footer />
         </AuthProvider>
       </body>
     </html>

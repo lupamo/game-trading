@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { RetroColor } from "@/components/RetroColor";
 import { GameCard } from "../components/GameCard";
-
+import { getBaseUrl } from "@/lib/config";
 interface Game {
   id: string
   title: string
@@ -45,8 +45,11 @@ async function getGames(searchParams: {
   if (searchParams.genre) params.append('genre', searchParams.genre)
   if (searchParams.condition) params.append('condition', searchParams.condition)
   if (searchParams.page) params.append('page', searchParams.page)
+  
+  const baseUrl = getBaseUrl();
+  const url = `${baseUrl}/api/games?${params.toString()}`;
 
-  const res = await fetch(`/api/games?${params.toString()}`, {
+  const res = await fetch(url, {
     cache: 'no-store'
   })
 

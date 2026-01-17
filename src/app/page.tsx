@@ -46,7 +46,7 @@ async function getGames(searchParams: {
   if (searchParams.condition) params.append('condition', searchParams.condition)
   if (searchParams.page) params.append('page', searchParams.page)
 
-  const res = await fetch(`http://localhost:3000/api/games?${params.toString()}`, {
+  const res = await fetch(`/api/games?${params.toString()}`, {
     cache: 'no-store'
   })
 

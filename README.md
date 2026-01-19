@@ -1,5 +1,6 @@
-# Game Trading Platform
+# Game Trading Platform[https://game-trading-k14e.vercel.app/]
 A modern web application that enables gamers to trade physical games with each other instead of buying new ones. Built with Nextjs, TypeScript and Prisma
+![HomePage Screenshot](public/readme.png)
 
 ## Features
 - User Authentication: Secure registration and login system

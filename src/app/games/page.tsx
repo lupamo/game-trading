@@ -5,6 +5,7 @@ import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 import { FiltersSidebar } from '@/components/FiltersSidebar'
 import { GameCard } from '@/components/GameCard'
+import { Prisma } from '@prisma/client'
 
 interface Game {
   id: string
@@ -44,7 +45,7 @@ async function getGames(searchParams: {
   const limit = 12
   const skip = (page - 1) * limit
 
-  const where: Record<string, unknown> = {}
+  const where: Prisma.GameWhereInput = {}
 
   if (searchParams.platform) {
     where.platform = searchParams.platform
@@ -59,39 +60,52 @@ async function getGames(searchParams: {
     where.condition = searchParams.condition
   }
 
-  const [games, total] = await Promise.all([
-    prisma.game.findMany({
-      where,
-      include: {
-        user: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-            avatar: true,
-            location: true,
+  try {
+    const [games, total] = await Promise.all([
+      prisma.game.findMany({
+        where,
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              avatar: true,
+              location: true,
+            }
           }
-        }
-      },
-      orderBy: {
-        createdAt: 'desc'
-      },
-      skip,
-      take: limit,
-    }),
-    prisma.game.count({ where })
-  ])
+        },
+        orderBy: {
+          createdAt: 'desc'
+        },
+        skip,
+        take: limit,
+      }),
+      prisma.game.count({ where })
+    ])
 
-  return {
-    games: games.map(game => ({
-      ...game,
-      createdAt: game.createdAt.toISOString()
-    })),
-    pagination: {
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit)
+    return {
+      games: games.map(game => ({
+        ...game,
+        createdAt: game.createdAt.toISOString()
+      })),
+      pagination: {
+        total,
+        page,
+        limit,
+        totalPages: Math.ceil(total / limit)
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching games:', error)
+    return {
+      games: [],
+      pagination: {
+        total: 0,
+        page,
+        limit,
+        totalPages: 0
+      }
     }
   }
 }
@@ -152,7 +166,7 @@ export default async function GamesPage({
                       <GameCard key={game.id} game={game} />
                     ))}
                   </div>
-                  <Pagination pagination={data.pagination} />
+                  <Pagination pagination={data.pagination} currentParams={params} />
                 </>
               )}
             </Suspense>
@@ -163,17 +177,31 @@ export default async function GamesPage({
   )
 }
 
-// Keep the rest of your functions (Pagination, EmptyState, LoadingSkeleton) the same
-function Pagination({ pagination }: { pagination: GamesResponse['pagination'] }) {
+function Pagination({ 
+  pagination, 
+  currentParams 
+}: { 
+  pagination: GamesResponse['pagination']
+  currentParams: { platform?: string; search?: string; condition?: string; page?: string }
+}) {
   const { page, totalPages } = pagination
 
   if (totalPages <= 1) return null
+
+  const buildUrl = (newPage: number) => {
+    const params = new URLSearchParams()
+    if (currentParams.platform) params.set('platform', currentParams.platform)
+    if (currentParams.search) params.set('search', currentParams.search)
+    if (currentParams.condition) params.set('condition', currentParams.condition)
+    params.set('page', newPage.toString())
+    return `?${params.toString()}`
+  }
 
   return (
     <div className="mt-8 flex justify-center gap-2">
       {page > 1 && (
         <Link
-          href={`?page=${page - 1}`}
+          href={buildUrl(page - 1)}
           className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
         >
           Previous
@@ -181,24 +209,37 @@ function Pagination({ pagination }: { pagination: GamesResponse['pagination'] })
       )}
 
       <div className="flex gap-2">
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
-          <Link
-            key={p}
-            href={`?page=${p}`}
-            className={`px-4 py-2 rounded-md ${
-              p === page
-                ? 'bg-[#E66B1A] text-white'
-                : 'border border-gray-300 hover:bg-gray-50'
-            }`}
-          >
-            {p}
-          </Link>
-        ))}
+        {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => {
+          let pageNum
+          if (totalPages <= 5) {
+            pageNum = i + 1
+          } else if (page <= 3) {
+            pageNum = i + 1
+          } else if (page >= totalPages - 2) {
+            pageNum = totalPages - 4 + i
+          } else {
+            pageNum = page - 2 + i
+          }
+          
+          return (
+            <Link
+              key={pageNum}
+              href={buildUrl(pageNum)}
+              className={`px-4 py-2 rounded-md ${
+                pageNum === page
+                  ? 'bg-[#E66B1A] text-white'
+                  : 'border border-gray-300 hover:bg-gray-50'
+              }`}
+            >
+              {pageNum}
+            </Link>
+          )
+        })}
       </div>
 
       {page < totalPages && (
         <Link
-          href={`?page=${page + 1}`}
+          href={buildUrl(page + 1)}
           className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50"
         >
           Next

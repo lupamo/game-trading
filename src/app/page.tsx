@@ -4,6 +4,7 @@ import { RetroColor } from "@/components/RetroColor";
 import { GameCard } from "../components/GameCard";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = 'force-dynamic';
 interface Game {
   id: string
   title: string

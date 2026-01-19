@@ -1,11 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
-import { error } from "console";
+
 
 //getting all games
 export async function GET(req: NextRequest) {
 	try {
+		console.log('/api/games called')
+		console.log('DATABASE_URL exists:', !!process.env.DATABASE_URL)
+		console.log('DATABASE_URL starts with:', process.env.DATABASE_URL?.substring(0, 20))
+
 		const { searchParams } = new URL(req.url)
 
 		const platform = searchParams.get('platform')
@@ -40,6 +44,8 @@ export async function GET(req: NextRequest) {
 		if (userId) {
 			where.userId = userId
 		}
+		console.log('About to query database...')
+		console.log('Query where:', JSON.stringify(where))
 
 		const [games, total] = await Promise.all([
 			prisma.game.findMany({
@@ -63,6 +69,7 @@ export async function GET(req: NextRequest) {
 			}),
 			prisma.game.count({ where })
 		])
+		console.log('Succesfully fetched games:', games.length)
 
 		return NextResponse.json({
 			games,
@@ -74,9 +81,17 @@ export async function GET(req: NextRequest) {
 			}
 		}, { status: 200 })
 	} catch (error) {
-		console.error('Error fetching games:', error)
+		console.error('❌ Error fetching games:', error)
+		console.error('❌ Error name:', error instanceof Error ? error.name : 'Unknown')
+		console.error('❌ Error message:', error instanceof Error ? error.message : 'Unknown')
+		console.error('❌ Error stack:', error instanceof Error ? error.stack : 'Unknown')
 		return NextResponse.json(
-			{ error: 'Failed to fetch games' },
+			{ 
+				error: 'Failed to fetch games',
+				message: error instanceof Error ? error.message : 'Unknown error',
+				type: error instanceof Error ? error.name : 'Unknown'
+			},
+
 			{ status: 500 }
 		)
 	}

@@ -1,7 +1,9 @@
 import Image from "next/image";
+import Link from "next/link";
 import { RetroColor } from "@/components/RetroColor";
 import { GameCard } from "../components/GameCard";
-import { getBaseUrl } from "@/lib/config";
+import { prisma } from "@/lib/prisma";
+
 interface Game {
   id: string
   title: string
@@ -30,38 +32,58 @@ interface GamesResponse {
   }
 }
 
-async function getGames(searchParams: {
-  platform?: string
-  search?: string
-  genre?: string
-  condition?: string
-  page?: string
-  limit?: string
-}): Promise<GamesResponse> {
-  const params = new URLSearchParams()
-  
-  if (searchParams.platform) params.append('platform', searchParams.platform)
-  if (searchParams.search) params.append('search', searchParams.search)
-  if (searchParams.genre) params.append('genre', searchParams.genre)
-  if (searchParams.condition) params.append('condition', searchParams.condition)
-  if (searchParams.page) params.append('page', searchParams.page)
-  
-  const baseUrl = getBaseUrl();
-  const url = `${baseUrl}/api/games?${params.toString()}`;
+async function getGames(limit: number = 4): Promise<GamesResponse> {
+  try {
+    const [games, total] = await Promise.all([
+      prisma.game.findMany({
+        include: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+              email: true,
+              avatar: true,
+              location: true,
+            }
+          }
+        },
+        orderBy: {
+          createdAt: 'desc'	
+        },
+        take: limit,
+      }),
+      prisma.game.count()
+    ])
 
-  const res = await fetch(url, {
-    cache: 'no-store'
-  })
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch games')
+    // Convert Date objects to strings for client components
+    return {
+      games: games.map(game => ({
+        ...game,
+        createdAt: game.createdAt.toISOString(),
+      })),
+      pagination: {
+        total,
+        page: 1,
+        limit,
+        totalPages: Math.ceil(total / limit)
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching games from home page:', error)
+    return {
+      games: [],
+      pagination: {
+        total: 0,
+        page: 1,
+        limit,
+        totalPages: 0
+      }
+    }
   }
-
-  return res.json()
 }
 
 export default async function Home() {
-  const data = await getGames({ limit: '4'})
+  const data = await getGames(4)
 
   return (    
     <div className="font-sans min-h-screen pb-20 bg-[#f4f6fa]">
@@ -114,13 +136,26 @@ export default async function Home() {
 
       <div className="max-w-7xl mx-auto px-4 mt-12">
         <h2 className="text-xl md:text-2xl text-[#E66B1A] font-press-start mb-6">Featured Games</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {data.games.map((game) => (
-            <GameCard key={game.id} game={game} />
-          ))}
-        </div>
+        {data.games.length > 0 ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {data.games.map((game) => (
+              <GameCard key={game.id} game={game} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-500 font-press-start text-sm mb-4">
+              No games available yet. Be the first to add one!
+            </p>
+            <Link
+              href="/games/add"
+              className="inline-block bg-[#E66B1A] text-white px-6 py-3 rounded-lg hover:bg-[#D55A1A] transition font-press-start text-xs"
+            >
+              Add Your First Game
+            </Link>
+          </div>
+        )}
       </div>
     </div>
-
   );
 }

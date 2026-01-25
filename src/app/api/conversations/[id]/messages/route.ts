@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@/auth'
 import { prisma } from '@/lib/prisma'
 
-// Get all messages in a conversation
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -74,7 +73,6 @@ export async function GET(
   }
 }
 
-// Send a message
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -96,8 +94,7 @@ export async function POST(
         { status: 400 }
       )
     }
-
-    // Verify user is part of the conversation
+    
     const conversation = await prisma.conversation.findFirst({
       where: {
         id: resolvedParams.id,

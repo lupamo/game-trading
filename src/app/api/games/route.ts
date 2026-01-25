@@ -2,8 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 
-
-//getting all games
 export async function GET(req: NextRequest) {
 	try {
 		const { searchParams } = new URL(req.url)
@@ -88,7 +86,6 @@ export async function GET(req: NextRequest) {
 	}
 }
 
-//adding a new game
 export async function POST(req: NextRequest) {
 	try {
 		const session = await auth()

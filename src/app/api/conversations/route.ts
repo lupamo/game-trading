@@ -77,7 +77,6 @@ export async function GET() {
 	}
 }
 
-//create a new conversation
 export async function POST(req: NextRequest) {
 	try {
 		const session = await auth();
